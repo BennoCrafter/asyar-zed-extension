@@ -1,0 +1,23 @@
+{
+  "name": "de.bennowo.asyar-zed",
+  "version": "1.0.0",
+  "description": "Open recent Zed projects and the front Finder folder in Zed",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "asyar dev",
+    "build": "asyar build",
+    "validate": "asyar validate",
+    "test": "node --test src/lib/",
+    "publish": "asyar publish"
+  },
+  "dependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "asyar-sdk": "^4.16.0",
+    "typescript": "^5.0.0",
+    "vite": "^6.0.0"
+  }
+}
