@@ -4,16 +4,17 @@
   "version": "1.0.0",
   "description": "Open recent Zed projects and Finder items in Zed.",
   "author": "bennowo",
-  "icon": "⚡",
+  "icon": "icon.png",
   "type": "extension",
   "searchable": true,
   "background": { "main": "dist/worker.js" },
-  "asyarSdk": "^4.16.0",
+  "asyarSdk": "^4.17.0",
   "platforms": [
     "macos"
   ],
   "permissions": [
-    "shell:spawn"
+    "shell:spawn",
+    "notifications:send"
   ],
   "permissionArgs": {
     "shell:spawn": [
@@ -25,7 +26,6 @@
       "id": "open-recent",
       "name": "Open Recent Zed Project",
       "description": "Pick a recent Zed project and open it",
-      "icon": "🕘",
       "mode": "view",
       "component": "RecentsView"
     },
@@ -33,9 +33,7 @@
       "id": "open-finder-folder",
       "name": "Open with Zed",
       "description": "Open the selected Finder items in Zed",
-      "icon": "📂",
-      "mode": "view",
-      "component": "FinderView"
+      "mode": "background"
     }
   ]
 }

@@ -1,11 +1,10 @@
 import 'asyar-sdk/tokens.css';
 import { mount } from 'svelte';
 import { ExtensionContext, extensionBridge, registerIconElement } from 'asyar-sdk/view';
-import type { Extension, IExtensionManager, IFeedbackService, IShellService } from 'asyar-sdk/contracts';
+import type { Extension, IExtensionManager } from 'asyar-sdk/contracts';
 
 import manifest from '../manifest.json';
 import RecentsView from './RecentsView.svelte';
-import { errorMessage, osascript, scripts } from './lib/zed';
 
 const extensionId =
   window.location.hostname === 'localhost' || window.location.hostname === 'asyar-extension.localhost'
@@ -52,12 +51,3 @@ window.addEventListener('keydown', (e) => {
 const target = document.getElementById('app');
 const viewName = new URLSearchParams(window.location.search).get('view');
 if (viewName === 'RecentsView' && target) mount(RecentsView, { target, props: { context } });
-
-// "Open with Zed" has nothing to show; it's a view only because spawns from the worker hang.
-// Hide first so the view never appears; the hidden iframe keeps running the spawn.
-if (viewName === 'FinderView') {
-  context.hideLauncher();
-  osascript(context.getService<IShellService>('shell'), scripts.openFinder).catch((e) =>
-    context.getService<IFeedbackService>('feedback').showHUD(errorMessage(e)),
-  );
-}

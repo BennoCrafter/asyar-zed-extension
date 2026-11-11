@@ -5,15 +5,13 @@ import { cleanError } from './recents.js';
  * Run an AppleScript through /usr/bin/osascript. Paths are passed as argv
  * (`on run argv`), never spliced into the source. sqlite3 and `open` run via
  * `do shell script`, so osascript is the only binary the user has to trust.
- *
- * Runs in the view: launcher 0.1.1-54 posts shell output only to iframes, so
- * spawns from the Web Worker never see their output or exit code.
+ * `background` keeps successful runs out of the launcher list and notifications.
  */
 export function osascript(shell: IShellService, script: string, argv: string[] = []): Promise<string> {
   return new Promise((resolve, reject) => {
     const out: string[] = [];
     const err: string[] = [];
-    const handle = shell.spawn({ program: '/usr/bin/osascript', args: ['-', ...argv], stdin: script });
+    const handle = shell.spawn({ program: '/usr/bin/osascript', args: ['-', ...argv], stdin: script, background: true });
     handle.onChunk((c) => (c.stream === 'stdout' ? out : err).push(c.data));
     handle.onDone((code) =>
       code === 0 || code == null
