@@ -8,8 +8,11 @@ export function cleanError(stderr) {
   return (m ? m[1] : stderr).trim();
 }
 
-const tilde = (p) => p.replace(/^\/Users\/[^/]+/, '~');
-const basename = (p) => p.replace(/\/+$/, '').split('/').pop() || p;
+// Home folders on macOS, Linux and Windows.
+const tilde = (p) => p.replace(/^(\/Users\/[^/]+|\/home\/[^/]+|[A-Za-z]:\\Users\\[^\\]+)/, '~');
+const trim = (p) => p.replace(/[/\\]+$/, '');
+const basename = (p) => trim(p).split(/[/\\]/).pop() || p;
+const dirname = (p) => trim(p).replace(/[/\\][^/\\]*$/, '') || p;
 
 /**
  * Rows from Zed's `workspaces` table (`sqlite3 -json`). `paths` holds one
@@ -20,16 +23,23 @@ export function toRecentItems(rows) {
   return rows.map(({ paths }) => {
     const argv = paths.split('\n').filter(Boolean);
     const more = argv.length > 1 ? ` +${argv.length - 1}` : '';
-    return { id: paths, title: basename(argv[0]) + more, subtitle: argv.map(tilde).join(', '), argv };
+    return { id: paths, title: basename(argv[0]) + more, subtitle: tilde(dirname(argv[0])), argv };
   });
 }
 
-/** Every whitespace-separated word must appear in title or subtitle. */
+/** Contents of .git/HEAD → branch name, or the short hash when detached. */
+export function branchFromHead(head) {
+  const text = head.trim();
+  const ref = text.match(/^ref: refs\/heads\/(.+)$/);
+  return ref ? ref[1] : /^[0-9a-f]{40}$/.test(text) ? text.slice(0, 7) : null;
+}
+
+/** Every whitespace-separated word must appear in the title or one of the paths. */
 export function filterItems(items, query, limit = 200) {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   const out = [];
   for (const item of items) {
-    const hay = `${item.title} ${item.subtitle ?? ''}`.toLowerCase();
+    const hay = `${item.title} ${item.argv.map(tilde).join(' ')}`.toLowerCase();
     if (words.every((w) => hay.includes(w))) out.push(item);
     if (out.length >= limit) break;
   }

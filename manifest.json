@@ -2,23 +2,37 @@
   "id": "de.bennowo.asyar-zed",
   "name": "Zed",
   "version": "1.0.0",
-  "description": "Open recent Zed projects and Finder items in Zed.",
+  "description": "Open recent Zed projects and selected files in Zed.",
   "author": "bennowo",
   "icon": "icon.png",
   "type": "extension",
   "searchable": true,
-  "background": { "main": "dist/worker.js" },
+  "background": {
+    "main": "dist/worker.js"
+  },
   "asyarSdk": "^4.19.0",
   "platforms": [
-    "macos"
+    "macos",
+    "linux",
+    "windows"
   ],
   "permissions": [
     "shell:spawn",
-    "notifications:send"
+    "notifications:send",
+    "selection:read",
+    "files:read",
+    "fs:read",
+    "cache:read",
+    "cache:write"
   ],
   "permissionArgs": {
     "shell:spawn": [
-      "/usr/bin/osascript"
+      "/usr/bin/osascript",
+      "/bin/sh",
+      "powershell.exe"
+    ],
+    "files:read": [
+      "**/.git/HEAD"
     ]
   },
   "commands": [
@@ -32,7 +46,7 @@
     {
       "id": "open-finder-folder",
       "name": "Open with Zed",
-      "description": "Open the selected Finder items in Zed",
+      "description": "Open the selected file manager items in Zed",
       "mode": "background"
     }
   ]

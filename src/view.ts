@@ -50,4 +50,4 @@ window.addEventListener('keydown', (e) => {
 
 const target = document.getElementById('app');
 const viewName = new URLSearchParams(window.location.search).get('view');
-if (viewName === 'RecentsView' && target) mount(RecentsView, { target, props: { context } });
+if (viewName === 'RecentsView' && target) mount(RecentsView, { target, props: { context, extensionId } });
