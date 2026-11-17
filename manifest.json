@@ -8,7 +8,7 @@
   "type": "extension",
   "searchable": true,
   "background": { "main": "dist/worker.js" },
-  "asyarSdk": "^4.20.0",
+  "asyarSdk": "^4.19.0",
   "platforms": [
     "macos"
   ],

@@ -1,2 +1,5 @@
+allowBuilds:
+  esbuild: false
+  keytar: false
 minimumReleaseAgeExclude:
   - asyar-sdk@4.20.0
