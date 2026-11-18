@@ -2,6 +2,8 @@
 
 Open your recent [Zed](https://zed.dev) projects, and whatever is selected in your file manager, from the [Asyar](https://asyar.org) launcher.
 
+![Recent Zed projects with their git branches](screenshots/recent-projects.png)
+
 ## Commands
 
 | Command | What it does |
